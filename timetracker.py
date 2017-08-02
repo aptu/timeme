@@ -15,8 +15,14 @@ class Session(Base):
     start = Column(Integer, nullable=False)
     end = Column(Integer, nullable=True)
 
+#create an engine that stores datat in local directory
 engine = create_engine('sqlite:///timeme.db')
+
+#create all tables
 #Base.metadata.create_all(engine)
+
+
+#Bind engine and session
 Base.metadata.bind = engine
 
 DBSession = sessionmaker(bind=engine)
@@ -58,20 +64,4 @@ class TimeTracker():
         print("===========")
         for i in alldata:
             print("%.2f" % i[1])
-        
-        #if all:
-            
-
-
-
-#def main():
-#    tt = TimeTracker(session)
-#
-#    tt.start('Gaming')
-#    time.sleep(2)
-#    tt.start('Gaming')
-#    tt.end()
-#
-#if __name__ == "__main__":
-#    main()
-#
+ 
