@@ -4,6 +4,8 @@ from PyQt5 import QtGui, QtWidgets, QtCore
 import main_window, statsui
 from PyQt5.QtCore import pyqtSlot
 import timetracker
+import matplotlib
+matplotlib.use('Qt5Agg')
 
 class UiStats(QtWidgets.QDialog, statsui.Ui_Statistics):
     def __init__(self, parent=None):
@@ -62,9 +64,14 @@ class UiApp(QtWidgets.QDialog, main_window.Ui_TimeMe):
         #self.popMenu.addAction(QtWidgets.QAction('last day stats', self))
         #self.popMenu.addAction(QtWidgets.QAction('last week stats', self))
         #self.popMenu.addSeparator()
+        
         all_stats = QtWidgets.QAction('all time stats', self)       
         self.popMenu.addAction(all_stats)
         all_stats.triggered.connect(self.show_stats)
+        
+        reset_db = QtWidgets.QAction('reset all stats', self)
+        self.popMenu.addAction(reset_db)
+        reset_db.triggered.connect(self.reset)
         
        # show context menu
         point = self.btnMenu.pos()
@@ -74,16 +81,26 @@ class UiApp(QtWidgets.QDialog, main_window.Ui_TimeMe):
     @pyqtSlot()    
     def show_stats(self):
         self.tracker.stats()
-        self.window = UiStats()
-        
-        #print(dir(self.window))
+        self.window = UiStats()      
         
         self.window.show()
         
         
+    @pyqtSlot()
+    def reset(self):
+        messagebox = QtWidgets.QMessageBox()
+        messagebox.setIcon(QtWidgets.QMessageBox.Question)
+        messagebox.setWindowTitle('WARNING')
+        messagebox.setInformativeText(u"Are you sure you want to delete all your statistics?")
+        messagebox.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        ac = messagebox.exec_()
+        if ac == QtWidgets.QMessageBox.Yes:               
+            self.tracker.deletedb()
+    
         
         
-       
+    #def plot(self):
+         #select all datapoints
 
                
 

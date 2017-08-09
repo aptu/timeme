@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship, sessionmaker
 from sqlalchemy import create_engine
 import datetime
 import time
+import os
 
 Base = declarative_base()
 
@@ -15,11 +16,9 @@ class Session(Base):
     start = Column(Integer, nullable=False)
     end = Column(Integer, nullable=True)
 
-#create an engine that stores datat in local directory
-engine = create_engine('sqlite:///timeme.db')
-
-#create all tables
-#Base.metadata.create_all(engine)
+#create an engine that stores data in local directory
+dbpath = 'timeme.db'
+engine = create_engine('sqlite:///' + dbpath)
 
 
 #Bind engine and session
@@ -41,6 +40,13 @@ class TimeTracker():
     
     def __init__(self):
         self.__dbsession = session
+        #create all tables
+        if not os.path.exists(dbpath):
+            Base.metadata.create_all(engine)
+            
+    def deletedb(self):
+        os.remove(dbpath)
+        
 
     def start(self, sessiontype):
         self.end()
