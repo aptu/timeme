@@ -67,7 +67,13 @@ class TimeTracker():
         #alldata = session.query(Session.type, Session.start, Session.end).filter(Session.end!=None).all()
         #alldata = session.query(func.count(Session.end)).all()
         #print(alldata)
+        result = {}
+        
+        result['total_w'] = [ item for item in alldata if item[0] == 'work' ][0]
+        result['total_r'] = [ item for item in alldata if item[0] == 'relax' ][0]
+        result['days'] = '8'
         print("===========")
         for i in alldata:
             print("%.2f" % i[1])
+        return result
  

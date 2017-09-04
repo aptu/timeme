@@ -1,20 +1,24 @@
 import os
 import sys
 from PyQt5 import QtGui, QtWidgets, QtCore
-import main_window, statsui
+import ui_main_window,ui_stats
 from PyQt5.QtCore import pyqtSlot
 import timetracker
 import matplotlib
 matplotlib.use('Qt5Agg')
 
-class UiStats(QtWidgets.QDialog, statsui.Ui_Statistics):
-    def __init__(self, parent=None):
+class UiStats(QtWidgets.QDialog, ui_stats.Ui_Statistics):
+    def __init__(self, data, parent=None):
         super(UiStats, self).__init__(parent)
-        self.setupUi(self)
+        
+        self.setupUi(self)        
+        
+        self.label_2.setText(str(data['total_w'][1]))
+        self.label_4.setText(str(data['total_r'][1]))
+        self.label_6.setText(data['days'])
         
         
-class UiApp(QtWidgets.QDialog, main_window.Ui_TimeMe):
-    
+class UiApp(QtWidgets.QDialog, ui_main_window.Ui_TimeMe):    
     def __init__(self, tracker, parent=None):
         super(UiApp, self).__init__(parent)
         self.setupUi(self)      
@@ -80,9 +84,8 @@ class UiApp(QtWidgets.QDialog, main_window.Ui_TimeMe):
         
     @pyqtSlot()    
     def show_stats(self):
-        self.tracker.stats()
-        self.window = UiStats()      
-        
+        stats = self.tracker.stats()
+        self.window = UiStats(stats) 
         self.window.show()
         
         
@@ -99,7 +102,7 @@ class UiApp(QtWidgets.QDialog, main_window.Ui_TimeMe):
     
         
         
-    #def plot(self):
+    #def plot(self)
          #select all datapoints
 
                
