@@ -13,9 +13,10 @@ class UiStats(QtWidgets.QDialog, ui_stats.Ui_Statistics):
         
         self.setupUi(self)        
         
-        self.label_2.setText(str(data['total_w'][1]))
-        self.label_4.setText(str(data['total_r'][1]))
+        self.label_2.setText((data['total_w']))
+        self.label_4.setText(str(data['avg_w']))
         self.label_6.setText(data['days'])
+        self.label_8.setText(data['total_r'])
         
         
 class UiApp(QtWidgets.QDialog, ui_main_window.Ui_TimeMe):    
