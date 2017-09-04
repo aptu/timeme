@@ -3,6 +3,10 @@ Activity time tracker
 
 To run from the command line: $ python3 main.py
 
+Script ui2py.sh converts .ui files into .py files.
+Run from command line ./ui2py.sh before running main.py.
+Check if ui2py is executable; if not, do chmod +x.
+
 The window containing buttons Work Relax Pause ... appears.
 
 The first run of the program creates a database containing stats for Work and relax time by day.
