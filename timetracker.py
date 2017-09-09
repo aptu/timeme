@@ -46,7 +46,7 @@ class TimeTracker():
             
     def deletedb(self):
         os.remove(dbpath)
-        
+                
 
     def start(self, sessiontype):
         self.end()
@@ -68,19 +68,28 @@ class TimeTracker():
         #alldata = session.query(func.count(Session.end)).all()
         #print(alldata)
         result = {}
+                   
+            
          # find the timestamp for 1st day of using the program to coumt total days
-        day1 = session.query(func.min(Session.start).label('work')).one()[0]        
-        total_days = round((datetime.datetime.now().timestamp() - day1) / 86400)
+        day1 = session.query(func.min(Session.start).label('work')).one()[0] 
+        try:
+            total_days = round((datetime.datetime.now().timestamp() - day1) / 86400)
+            total_work = [ item for item in alldata if item[0] == 'work' ][0]
+            total_work = round(total_work[1] / 3600)
+            total_relax = [ item for item in alldata if item[0] == 'relax' ][0]
+            total_relax = round(total_relax[1] / 3600)
+            avg_work = total_work / total_days
+        except TypeError:
+            total_days = 0
+            total_work = 0
+            total_relax = 0
+            avg_work = 0.0
         
-        #total time spent for work in hours
-        total_work = [ item for item in alldata if item[0] == 'work' ][0]
-        total_work = round(total_work[1] / 3600)
+        #total time spent for work in hours  
         result['total_w'] = str(total_work)
-        result['avg_w'] = round(total_work / total_days, 1)
+        result['avg_w'] = round(avg_work, 1)
         
-        #total time spent for relaxing in hours
-        total_relax = [ item for item in alldata if item[0] == 'relax' ][0]
-        total_relax = round(total_relax[1] / 3600)        
+        #total time spent for relaxing in hours       
         result['total_r'] = str(total_relax)
         result['days'] = str(total_days)       
           
